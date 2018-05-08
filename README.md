@@ -1,6 +1,7 @@
 # ソケット通信(TCP/IP(つまりインターネット))の通信をする
 - 各言語で、server.{l,c,py} と client.{l,c,py} を作る感じ。
 
+---
 # サンプル
 - サーバ側
     - EusLisp  
@@ -16,9 +17,9 @@
     (format s "My name is Ikuo.~%")  
     (print :end s)  
 
+---
 # サーバ用の関数
 
----
 ## サーバ起動
 
 - 関数名は、**(start-server) または start_server() または startServer()**
@@ -34,7 +35,6 @@
    - 戻り値は無し。
    - 終了すると、その接続は切断される。
 
----
 ## サーバ終了
 
 - 関数名は、**(stop-server) または stop_server() または stopServer()**
