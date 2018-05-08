@@ -1,4 +1,5 @@
 ;;
+;;  server.l
 ;;  $Id$
 ;;
 ;;  Ikuo Mizuuchi
@@ -20,18 +21,37 @@
 (defun stop-server (&optional (server *server*))
   (send server :stop))
 
-(defun sample-func-server (strm)
-  (let (line)
+(defun sample-func (strm)
+  (let (data)
     (while t
-      (setq line (read-line strm nil :eof))
-      (when (eq line :eof)
-	(warn ";; connection has been closed.~%")
-	(return-from sample-func-server nil))
-      (warn ";; sample-func-server received: ~S~%" line)
-      (when (string= "end" (subseq line 0 3))
-	(warn ";; client has sent \"end\"~%")
-	(warn ";; sample-func-server finished.~%")
-	(return-from sample-func-server t))
+      (setq data (read strm nil :eof))
+      (warn ";; sample-func received: ~A~%" data)
+
+      (cond
+
+	  ;;
+	((float-vector-p data)
+	 (warn "for example (send *ks* :angle-vector ~A 10000)~%" data)
+	 )
+
+	;;
+	((eq :end data)
+	 (warn ";; client has sent :end~%")
+	 (warn ";; finishing sample-func.~%")
+	 (return-from sample-func t))
+
+	;;
+	((eq data :eof)
+	 (warn ";; connection has been closed.~%")
+	 (return-from sample-func nil))
+
+	;; otherwise
+	(t
+	 (warn ";; cannot interpret ~A~%" data)
+	 )
+
+	) ;;end of cond
+
       )))
 
 (defclass SocketServer
@@ -116,6 +136,22 @@
 	 (warn ";;; Couldn't make a server socket.~%")
 	 nil))
     ))
+
+
+;;;; sample func for server which processes line by line.
+(defun sample-func-server (strm)
+  (let (line)
+    (while t
+      (setq line (read-line strm nil :eof))
+      (when (eq line :eof)
+	(warn ";; connection has been closed.~%")
+	(return-from sample-func-server nil))
+      (warn ";; sample-func-server received: ~S~%" line)
+      (when (string= "end" (subseq line 0 3))
+	(warn ";; client has sent \"end\"~%")
+	(warn ";; sample-func-server finished.~%")
+	(return-from sample-func-server t))
+      )))
 
 
 (provide :server)
