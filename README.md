@@ -1,7 +1,22 @@
 # ソケット通信(TCP/IP(つまりインターネット))の通信をする
 - 各言語で、server.{l,c,py} と client.{l,c,py} を作る感じ。
 
-# サーバに用意する関数
+# サンプル
+- サーバ側
+    - EusLisp  
+    (load "server.l")  
+    (start-server 'sample-func)  
+    (stop-server)  
+- クライアント側
+    - EusLisp  
+    (load "client.l")  
+    (setq s (connect-host :host "192.168.4.123" :port 9000))  
+    (print #f(1 2 3) s)  
+    (print "ikuo" s)  
+    (format s "My name is Ikuo.~%")  
+    (print :end s)  
+
+# サーバ用の関数
 
 ---
 ## サーバ起動
@@ -25,16 +40,12 @@
 - 関数名は、**(stop-server) または stop_server() または stopServer()**
 - 接続スレッドと、接続待ち受けスレッドを終了して、ソケットを閉じる。
 
-# クライアントに用意する関数
+---
+# クライアント用の関数
 
 ## サーバに接続
 
-- 引数は、サーバのホスト名・ポート番号
-- 戻り値は、ファイルディスクプリタ（Cなら(int)fd）（でいいよね？）
-
----
-## サーバに接続(ストリーム版)
-
+- 関数名は、**(connect-host) または connect_host() または connectHost()**
 - 引数は、サーバのホスト名・ポート番号
 - 戻り値は、ストリームオブジェクト（Cなら(FILE*)fp）
 
