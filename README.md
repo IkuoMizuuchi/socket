@@ -7,7 +7,7 @@
     - EusLisp  
     (load "server.l")  
     (start-server 'sample-func)  
-    ;; 
+    ;;  
     (stop-server)  
 - クライアント側
     - EusLisp  
@@ -16,7 +16,7 @@
     (print #f(1 2 3) s)  
     (print "ikuo" s)  
     (format s "My name is Ikuo.~%")  
-    ;; 
+    ;;  
     (print :end s)  
     (close s)  
 
@@ -24,6 +24,9 @@
 # TIPS
 - クライアントから接続しようとしても、かなり待たされて結局接続できない場合
     - start-server した時に「Server host:"ホスト名" port:ポート番号」と表示されているので、そのホスト名・番号を connect-host の引数にしてみる。
+    - start-server する時に、自身のIPアドレスを指定する。クライアントはそのIPアドレスをしていして接続する。
+        - EusLisp の場合  
+	(start-server 'sample-func :host "192.168.11.200")
 
 ---
 # サーバ用の関数
