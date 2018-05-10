@@ -138,6 +138,17 @@
     ))
 
 
+(defun need-thread (n &optional (lsize (* 512 1024)) (csize lsize))
+  (let* (num thrs
+	    (lsize (* 512 1024))
+	    (csize lsize))
+    (setq num (- n (length (sys::free-threads))))
+    (when (> num 0)
+      (dotimes (i num)
+	(sys:make-thread 1 lsize csize)
+	(push (sys:thread #'(lambda ())) thrs))
+      (dolist (thr thrs) (sys:wait-thread thr)))))
+
 ;;;; sample func for server which processes line by line.
 (defun sample-func-server (strm)
   (let (line)
