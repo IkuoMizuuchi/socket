@@ -10,12 +10,12 @@
     ;;  
     (stop-server)  
 - クライアント側
-    - python
+    - python  
     import client  
     s = client.connectHost()  
     import foreus  
     s.send(foreus.list2fvstr([1,2,3,4,5]).encode())  
-    
+    ...  
     s.close()  
     - EusLisp  
     (load "client.l")  
